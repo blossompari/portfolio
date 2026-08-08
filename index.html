@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pari Dagale — Computer Educator & Apparel Graphic Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430;
+    --ink-soft:#2E3A4C;
+    --paper:#EDE7D9;
+    --paper-hi:#F6F2E8;
+    --thread:#A8402A;
+    --thread-deep:#7E2E1F;
+    --mustard:#E3B23C;
+    --teal:#3F6E68;
+    --line: rgba(27,36,48,0.16);
+    --line-on-dark: rgba(237,231,217,0.22);
+    --radius: 2px;
+    --maxw: 1160px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--thread);
+  }
+  .eyebrow.on-dark{color:var(--mustard);}
+
+  /* dot grid backdrop — doubles as pattern-grading paper & spec grid */
+  .grid-bg{
+    background-image: radial-gradient(circle, rgba(27,36,48,0.18) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .grid-bg-dark{
+    background-image: radial-gradient(circle, rgba(237,231,217,0.14) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  /* corner crosshairs — pattern-notch motif reused throughout */
+  .notched{ position:relative; }
+  .notched::before, .notched::after,
+  .notched > .n2::before, .notched > .n2::after{
+    content:"";
+    position:absolute;
+    width:9px; height:9px;
+    border-top:1.5px solid var(--thread);
+    border-left:1.5px solid var(--thread);
+    opacity:0.6;
+  }
+  .notched::before{ top:-1px; left:-1px; }
+  .notched::after{ top:-1px; right:-1px; transform:rotate(90deg); }
+
+  /* NAV */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(237,231,217,0.9);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    min-height:64px;
+    flex-wrap:wrap;
+    gap:10px 0;
+    padding-top:10px; padding-bottom:10px;
+  }
+  .logo{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:19px;
+    letter-spacing:0.01em;
+    text-decoration:none;
+  }
+  .logo span{color:var(--thread);}
+  .navlinks{
+    display:flex; gap:20px; list-style:none; margin:0; padding:0;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    flex-wrap:wrap;
+  }
+  .navlinks a{text-decoration:none; opacity:0.75; transition:opacity .2s;}
+  .navlinks a:hover, .navlinks a:focus-visible{opacity:1; color:var(--thread);}
+
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--thread); outline-offset:3px; }
+
+  /* HERO */
+  .hero{
+    padding:150px 0 90px;
+    position:relative;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.25fr 0.9fr;
+    gap:56px;
+    align-items:start;
+  }
+  .hero h1{
+    font-size:clamp(48px, 7vw, 88px);
+    line-height:0.98;
+    margin-top:14px;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--thread);
+    font-weight:500;
+  }
+  .hero-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    letter-spacing:0.03em;
+    color:var(--ink-soft);
+    margin-top:18px;
+  }
+  .hero-copy{
+    max-width:46ch;
+    margin-top:22px;
+    color:var(--ink-soft);
+    font-size:16.5px;
+  }
+  .hero-ctas{ margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    text-decoration:none;
+    padding:13px 22px;
+    border:1px solid var(--ink);
+    border-radius:var(--radius);
+    transition:background .2s, color .2s, border-color .2s;
+  }
+  .btn.primary{ background:var(--ink); color:var(--paper-hi); }
+  .btn.primary:hover{ background:var(--thread); border-color:var(--thread); }
+  .btn.ghost:hover{ border-color:var(--thread); color:var(--thread); }
+
+  /* spec card — signature element, echoes a garment tech-pack panel */
+  .speccard{
+    background:var(--paper-hi);
+    border:1px solid var(--line);
+    padding:26px 24px 22px;
+    position:relative;
+  }
+  .speccard .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--thread);
+    display:block;
+    margin-bottom:16px;
+  }
+  .stat-row{
+    display:flex;
+    justify-content:space-between;
+    padding:14px 0;
+    border-top:1px dashed var(--line);
+  }
+  .stat-row:first-of-type{border-top:none;}
+  .stat-num{ font-family:'Fraunces', serif; font-size:26px; font-weight:600; }
+  .stat-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    align-self:center;
+    text-align:right;
+  }
+
+  /* seam divider - stitched line between sections */
+  .seam{
+    height:1px;
+    background-image: linear-gradient(90deg, var(--ink) 60%, transparent 0%);
+    background-size: 12px 1px;
+    opacity:0.35;
+  }
+
+  section{padding:88px 0;}
+  .section-head{ margin-bottom:48px; max-width:60ch; }
+  .section-head h2{ font-size:clamp(30px,4vw,42px); margin-top:8px; }
+  .section-head p{ color:var(--ink-soft); margin-top:14px; }
+
+  /* ABOUT */
+  #about{ background:var(--paper-hi); }
+  .about-grid{
+    display:grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap:56px;
+    align-items:start;
+  }
+  .monogram{
+    width:100%;
+    aspect-ratio:1;
+    border-radius:50%;
+    border:1.5px solid var(--thread);
+    padding:8px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--paper);
+  }
+  .monogram img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+  }
+  .monogram span{
+    font-family:'Fraunces', serif;
+    font-size:56px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .about-facts{
+    margin-top:22px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    line-height:2.1;
+    color:var(--ink-soft);
+  }
+  .about-facts b{color:var(--ink); font-weight:500;}
+  .about-body p{ margin:0 0 16px; color:var(--ink-soft); }
+  .about-body p:first-child{
+    font-family:'Fraunces', serif;
+    font-size:22px;
+    font-weight:500;
+    color:var(--ink);
+    line-height:1.5;
+  }
+
+  /* SKILLS */
+  .skills-lanes{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .lane-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--teal);
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+    margin-bottom:18px;
+  }
+  .skill-card{
+    background:var(--paper-hi);
+    border:1px solid var(--line);
+    padding:20px 20px 18px;
+    margin-bottom:16px;
+  }
+  .skill-card h3{ font-size:17px; margin-bottom:8px; }
+  .skill-card p{ margin:0; color:var(--ink-soft); font-size:14.5px; }
+
+  /* EXPERIENCE */
+  #experience{ background:var(--ink); color:var(--paper-hi); }
+  #experience .eyebrow{color:var(--mustard);}
+  #experience .section-head p{ color:rgba(237,231,217,0.7); }
+  .tl{ position:relative; }
+  .tl::before{
+    content:"";
+    position:absolute; left:118px; top:6px; bottom:6px;
+    width:1px;
+    background-image: linear-gradient(180deg, var(--line-on-dark) 60%, transparent 0%);
+    background-size: 1px 10px;
+  }
+  @media(max-width:760px){ .tl::before{ left:16px; } }
+  .role{
+    display:grid;
+    grid-template-columns: 100px 1fr;
+    gap:32px;
+    padding:26px 0;
+    border-bottom:1px solid var(--line-on-dark);
+    position:relative;
+  }
+  .role:last-child{ border-bottom:none; }
+  .role-dates{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.03em;
+    color:var(--mustard);
+    padding-top:4px;
+  }
+  .role-dot{
+    position:absolute; left:114px; top:32px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--mustard);
+  }
+  @media(max-width:760px){
+    .role{ grid-template-columns: 1fr; gap:8px; padding-left:34px; }
+    .role-dot{ left:12px; }
+  }
+  .role h3{ font-size:19px; font-weight:600; }
+  .role .co{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--mustard);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-top:4px;
+    display:block;
+  }
+  .role ul{ margin:14px 0 0; padding-left:18px; color:rgba(237,231,217,0.78); font-size:14.5px; }
+  .role ul li{ margin-bottom:6px; }
+  .role .toolline{
+    margin-top:12px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:rgba(237,231,217,0.55);
+  }
+
+  /* EDUCATION + CERTS */
+  .ed-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+  .ed-item{ padding:18px 0; border-top:1px dashed var(--line); }
+  .ed-item:first-child{ border-top:none; }
+  .ed-item .yr{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--thread); }
+  .ed-item h3{ font-size:18px; margin-top:6px; }
+  .ed-item .school{ color:var(--ink-soft); font-size:14px; margin-top:3px; }
+  .cert-list{ list-style:none; margin:0; padding:0; }
+  .cert-list li{
+    padding:14px 0 14px 22px;
+    border-top:1px dashed var(--line);
+    position:relative;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .cert-list li:first-child{ border-top:none; }
+  .cert-list li::before{
+    content:"+";
+    position:absolute; left:0; top:12px;
+    color:var(--thread);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .cert-list b{ color:var(--ink); font-weight:500; }
+
+  /* PERSONAL STRIP */
+  .strip{
+    background:var(--paper-hi);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .strip .wrap{
+    display:flex; gap:60px; padding:36px 32px;
+    flex-wrap:wrap;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+  }
+  .strip .col b{
+    display:block;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--thread);
+    margin-bottom:8px;
+    font-size:11px;
+  }
+
+  /* CONTACT */
+  #contact{ text-align:left; }
+  .contact-grid{
+    display:grid; grid-template-columns:1.2fr 0.8fr; gap:56px; align-items:end;
+  }
+  #contact h2{ font-size:clamp(32px,5vw,54px); }
+  #contact .hero-copy{ margin-top:18px; }
+  .contact-links{ display:flex; flex-direction:column; gap:14px; align-items:flex-start; }
+  .contact-links a{
+    text-decoration:none;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:2px;
+    transition:border-color .2s, color .2s;
+  }
+  .contact-links a:hover{ color:var(--thread); border-color:var(--thread); }
+
+  footer{
+    padding:28px 0 40px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+
+  .reveal{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media(max-width:900px){
+    .hero-grid, .about-grid, .skills-lanes, .ed-grid, .contact-grid{ grid-template-columns:1fr; }
+    .navlinks{ gap:14px; font-size:10.5px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="#hero" class="logo">Pari <span>Dagale</span></a>
+    <ul class="navlinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero grid-bg" id="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Navi Mumbai, Maharashtra · Open to Opportunities</span>
+      <h1>Pari<br><em>Dagale</em></h1>
+      <div class="hero-sub">COMPUTER EDUCATOR — APPAREL GRAPHIC DESIGNER</div>
+      <p class="hero-copy">Ten years training students and professionals in practical computer skills, alongside five years designing commercial prints and license graphics for kidswear, women's and menswear collections. Comfortable moving between a classroom lesson plan and a garment tech pack.</p>
+      <div class="hero-ctas">
+        <a href="#experience" class="btn primary">See the work</a>
+        <a href="#contact" class="btn ghost">Get in touch</a>
+      </div>
+    </div>
+    <div class="speccard notched">
+      <span class="tag">Quick Spec</span>
+      <div class="stat-row"><span class="stat-num">10+</span><span class="stat-label">Years teaching computer skills</span></div>
+      <div class="stat-row"><span class="stat-num">5+</span><span class="stat-label">Years apparel graphic design</span></div>
+      <div class="stat-row"><span class="stat-num">150+</span><span class="stat-label">Commercial prints per season</span></div>
+      <div class="stat-row"><span class="stat-num">3</span><span class="stat-label">Languages — Eng · Hindi · Marathi</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="seam"></div></div>
+
+<section id="about" class="grid-bg">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">01 · About</span>
+      <h2>Two crafts, one attention to detail</h2>
+    </div>
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="monogram"><img src="assets/pari-photo.jpg" alt="Portrait of Pari Dagale"></div>
+        <div class="about-facts">
+          <div>📍 Gulmohar Park, Sec 26, Taloja Phase 2, Navi Mumbai — 410208</div>
+          <div>📞 <b>+91 91376 77481</b></div>
+          <div>📧 <b>pramiladagale99@gmail.com</b></div>
+        </div>
+      </div>
+      <div class="about-body reveal">
+        <p>An experienced computer teacher and an apparel graphic designer, working two disciplines that share the same core habit: getting the details exactly right before anything goes out the door.</p>
+        <p>Over ten years, she has designed and delivered a progressive digital literacy and coding curriculum, training students and corporate professionals in MS-CIT, MS Office, Desktop Publishing, and Tally — simplifying technical concepts and running a working computer lab day to day.</p>
+        <p>Alongside teaching, she has spent five years as an apparel graphic designer, conceptualising commercial and licensed graphics for kidswear, women's and menswear collections — forecasting trends, building tech packs, and coordinating with overseas manufacturing partners and print vendors to keep every print production-ready.</p>
+        <p>Proficient in Adobe Illustrator and Photoshop, with a steady eye for typography, colour theory, and technical print feasibility.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="seam"></div></div>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">02 · Skills</span>
+      <h2>What she works with</h2>
+      <p>A working set split across the classroom and the design table.</p>
+    </div>
+    <div class="skills-lanes">
+      <div class="reveal">
+        <div class="lane-label">Teaching &amp; Software</div>
+        <div class="skill-card">
+          <h3>Software Training</h3>
+          <p>MS-CIT, MS Office, Desktop Publishing (DTP), Tally ERP 9 / Prime, and typing instruction — English &amp; Marathi, 30/40 wpm.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Curriculum &amp; Classroom Ops</h3>
+          <p>Designing digital-literacy and coding curriculum, running daily batches, assessing progress through practical assignments and mock tests, and maintaining the computer lab itself.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Computer Expert</h3>
+          <p>Broad, hands-on comfort across office software, hardware troubleshooting, and exam-certification prep.</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="lane-label">Apparel &amp; Design</div>
+        <div class="skill-card">
+          <h3>Design Tools</h3>
+          <p>Adobe Illustrator, Adobe Photoshop, CorelDRAW — vector illustration, typography, and surface print techniques.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Apparel Craft</h3>
+          <p>Print placement, colour separation, tech pack creation, strike-off approval, and repeat/all-over patterns (AOP).</p>
+        </div>
+        <div class="skill-card">
+          <h3>Apparel &amp; Product Design</h3>
+          <p>Experienced — trend forecasting through to production-ready chest prints and AOPs for kids, women's, and menswear.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="grid-bg">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">03 · Projects</span>
+      <h2>Featured tech pack</h2>
+      <p>A look at the production paperwork behind a print — the CAD reference, fabric base, print colours, and approval status a factory actually works from.</p>
+    </div>
+    <div class="speccard notched reveal" style="max-width:640px;">
+      <span class="tag">CAD Reference — YD-AVEN</span>
+      <div class="stat-row" style="display:block; padding:0 0 16px;">
+        <h3 style="font-size:22px; margin-bottom:6px;">Nap Chief — Marvel Avengers Kidswear</h3>
+        <p style="margin:0; color:var(--ink-soft); font-size:14.5px;">A full licensed print tech pack for Nap Chief: boys' joggers built on the Marvel Avengers style guide, covering CAD references, fabric bases, screen-print colourways, and approval status across the collection.</p>
+      </div>
+      <div class="stat-row" style="border-top:1px dashed var(--line);">
+        <span class="stat-label" style="text-align:left;">Client</span>
+        <span class="stat-label" style="text-align:right;">Nap Chief</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label" style="text-align:left;">License</span>
+        <span class="stat-label" style="text-align:right;">Marvel Avengers</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label" style="text-align:left;">Deliverable</span>
+        <span class="stat-label" style="text-align:right;">109-page print tech pack</span>
+      </div>
+      <div style="margin-top:20px;">
+        <a href="assets/nap-chief-marvel-avengers-techpack.pdf" target="_blank" rel="noopener" class="btn primary">View tech pack (PDF) ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="seam"></div></div>
+
+<section id="experience" class="grid-bg-dark">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">04 · Experience</span>
+      <h2>Where the work happened</h2>
+    </div>
+    <div class="tl">
+      <div class="role reveal">
+        <div class="role-dates">Current<br>5 yrs</div>
+        <div class="role-dot"></div>
+        <div>
+          <h3>Graphic Designer <span style="font-weight:400">(Freelance)</span></h3>
+          <span class="co">Independent</span>
+          <ul>
+            <li>Designs vector illustration, typography, and surface prints for fast-paced fashion brands.</li>
+            <li>Translates seasonal trends into market-ready chest prints, all-over prints (AOP), and full tech packs.</li>
+            <li>Delivers 150+ commercial graphic prints per season across kids', women's, and menswear.</li>
+            <li>Owns print placement, colour separation, strike-off approval, and repeat-pattern development.</li>
+          </ul>
+          <div class="toolline">Tools — Adobe Illustrator · Adobe Photoshop · CorelDRAW</div>
+        </div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-dates">2014–2018</div>
+        <div class="role-dot"></div>
+        <div>
+          <h3>Computer Teacher</h3>
+          <span class="co">IT Teamwork &amp; Keerti Computer Institute</span>
+          <ul>
+            <li>Delivered computer training across MS Office, MS-CIT, and typing to students and working professionals.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-dates">2013–2014</div>
+        <div class="role-dot"></div>
+        <div>
+          <h3>Computer Teacher</h3>
+          <span class="co">Asset C.E. Pvt. Ltd.</span>
+          <ul>
+            <li>Continued hands-on instruction in core computer applications and office software.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-dates">2011–2013</div>
+        <div class="role-dot"></div>
+        <div>
+          <h3>Senior Computer Teacher</h3>
+          <span class="co">Scholar's Computer Institute</span>
+          <ul>
+            <li>Led daily batches for MS-CIT and MS Office, keeping 100% compliance with the state board curriculum.</li>
+            <li>Trained corporate professionals and students in Advanced Excel and Tally Prime.</li>
+            <li>Ran specialised DTP modules, guiding students through brochure and logo layout projects.</li>
+            <li>Assessed performance through weekly assignments, mock tests, and final certification prep.</li>
+            <li>Maintained the institute's computer lab — software installs and basic hardware fixes.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="seam"></div></div>
+
+<section id="education">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">05 · Education &amp; Certifications</span>
+      <h2>Foundation &amp; credentials</h2>
+    </div>
+    <div class="ed-grid">
+      <div class="reveal">
+        <div class="ed-item">
+          <div class="yr">2011</div>
+          <h3>Higher Secondary — Commerce</h3>
+          <div class="school">Maharashtra State Board</div>
+        </div>
+        <div class="ed-item">
+          <div class="yr">2008</div>
+          <h3>Secondary</h3>
+          <div class="school">Maharashtra State Board</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <ul class="cert-list">
+          <li><b>MS-CIT Certified Faculty</b> — Maharashtra State Board of Technical Education, Mumbai</li>
+          <li><b>Certified Tally Professional</b> — Scholar's Academy</li>
+          <li><b>Diploma / Certification in Desktop Publishing</b> (DTP)</li>
+          <li><b>MS Office</b> Certification</li>
+          <li><b>Typing — English &amp; Marathi</b>, 30/40 wpm — Maharashtra State Council of Examinations, Pune</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <div class="col">
+      <b>Languages</b>
+      English · Hindi · Marathi
+    </div>
+    <div class="col">
+      <b>Hobbies</b>
+      Graphic Designing · Singing
+    </div>
+    <div class="col">
+      <b>Marketing</b>
+      Skillful
+    </div>
+  </div>
+</div>
+
+<section id="contact" class="grid-bg">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="reveal">
+        <span class="eyebrow">06 · Contact</span>
+        <h2>Let's talk teaching or design</h2>
+        <p class="hero-copy">Open to computer-training roles, apparel graphic design work, or projects that need a bit of both. Based in Navi Mumbai — reachable by phone or email.</p>
+      </div>
+      <div class="contact-links reveal">
+        <a href="tel:+919137677481">📞 +91 91376 77481</a>
+        <a href="mailto:pramiladagale99@gmail.com">📧 pramiladagale99@gmail.com</a>
+        <a href="https://maps.google.com/?q=Gulmohar+Park+Sec+26+Taloja+Phase+2+Navi+Mumbai" target="_blank" rel="noopener">📍 Gulmohar Park, Sec 26, Taloja Phase 2, Navi Mumbai</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Pari Dagale — Computer Educator &amp; Apparel Graphic Designer · Navi Mumbai, Maharashtra
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, { threshold:0.12 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
